@@ -62,7 +62,7 @@
 
 	/* misc functions */
 
-	/*
+	/**
 	 * Generate a random string of given length
 	 *
 	 * @param int $length Number of characters to be returned 
@@ -74,7 +74,7 @@
 		return substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, $length);
 	}
 
-	/*
+	/**
 	 * Prepend leading zero's to a number
 	 *
 	 * @param string $input Input string
@@ -87,7 +87,7 @@
 		return str_pad($input, $totaldigits, '0', STR_PAD_LEFT);
 	}
 
-	/*
+	/**
 	 * Prepend a character to a string
 	 *
 	 * @param string $input Input string
@@ -101,7 +101,7 @@
 		return str_pad($input, $totalchar, $character, STR_PAD_LEFT);
 	}
 
-	/*
+	/**
 	 * Check if a number is even
 	 *
 	 * @param int $number Number to check
@@ -113,7 +113,7 @@
 		return ($number%2==0) ? true : false;
 	}
 
-	/*
+	/**
 	 * Check if a number is odd
 	 *
 	 * @param int $number Number to check
@@ -127,7 +127,7 @@
 
 	/* string functions */
 
-	/*
+	/**
 	 * Remove all characters from a string except for those in the second parameter
 	 *
 	 * @param string $str Input string
@@ -151,7 +151,7 @@
 		return $output;
 	}
 
-	/*
+	/**
 	 * Replace specific characters with specific characters in a string
 	 *
 	 * @param string $str Input string
@@ -183,7 +183,7 @@
 		return $output;
 	}
 
-	/*
+	/**
 	 * Replaces special characters to their html-entity
 	 *
 	 * @param string $input Input string
@@ -203,7 +203,7 @@
 		return $output;
 	}
 
-	/*
+	/**
 	 * Cleanup input received from ckeditor
 	 * newlines and tabs are removed, opening paragraph right after a closing paragraph is replace by two line breaks
 	 *
@@ -219,7 +219,7 @@
 		return $output;
 	}
 
-	/*
+	/**
 	 * Returns the given number in a human friendly format (NL)
 	 *
 	 * @param int $number Input number
@@ -267,7 +267,7 @@
 		return $result;
 	}
 
-	/*
+	/**
 	 * Returns the given truncated iso date in a human friendly format (NL)
 	 *
 	 * @param int $input ISO date (YYYYMMDDHHMMSS)
@@ -312,5 +312,28 @@
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Returns the IP-address from the server variables
+	 *
+	 * @return string IP-address
+	 */
+	function getRealIP()
+	{
+		if (!empty($_SERVER['HTTP_CLIENT_IP']))	//check ip from share internet
+		{
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+		}
+		elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))	//to check ip is pass from proxy
+		{
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		else
+		{
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+
+		return $ip;
 	}
 ?>
