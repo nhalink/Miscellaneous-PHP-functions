@@ -42,7 +42,7 @@
 	 * @param string $needle Search string
 	 * @param int $offset Number of characters from the beginning of the string
 	 *
-	 * @return int First occurrence of needle with in haystack or 0
+	 * @return int First occurrence of needle within haystack or 0
 	 */
 	function instr($haystack, $needle, $offset=0)
 	{
@@ -62,10 +62,10 @@
 
 	/* misc functions */
 
-	/**
+	/*
 	 * Generate a random string of given length
 	 *
-	 * @param int $length Number of characters to be returned 
+	 * @param int $length Number of characters to be returned
 	 *
 	 * @return string Generated string of random characters
 	 */
@@ -74,7 +74,7 @@
 		return substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, $length);
 	}
 
-	/**
+	/*
 	 * Prepend leading zero's to a number
 	 *
 	 * @param string $input Input string
@@ -87,7 +87,7 @@
 		return str_pad($input, $totaldigits, '0', STR_PAD_LEFT);
 	}
 
-	/**
+	/*
 	 * Prepend a character to a string
 	 *
 	 * @param string $input Input string
@@ -101,7 +101,7 @@
 		return str_pad($input, $totalchar, $character, STR_PAD_LEFT);
 	}
 
-	/**
+	/*
 	 * Check if a number is even
 	 *
 	 * @param int $number Number to check
@@ -113,7 +113,7 @@
 		return ($number%2==0) ? true : false;
 	}
 
-	/**
+	/*
 	 * Check if a number is odd
 	 *
 	 * @param int $number Number to check
@@ -127,11 +127,11 @@
 
 	/* string functions */
 
-	/**
+	/*
 	 * Remove all characters from a string except for those in the second parameter
 	 *
 	 * @param string $str Input string
-	 * @param string $chars Characters to remove 
+	 * @param string $chars Characters to remove
 	 *
 	 * @return string Filtered string
 	 */
@@ -151,11 +151,11 @@
 		return $output;
 	}
 
-	/**
+	/*
 	 * Replace specific characters with specific characters in a string
 	 *
 	 * @param string $str Input string
-	 * @param string $chars Characters to replace 
+	 * @param string $chars Characters to replace
 	 * @param string $chars Replacement characters
 	 *
 	 * @return string Replaced character string
@@ -170,20 +170,13 @@
 		{
 			$pos = strpos($chars, $char);
 
-			if ($pos !== false)
-			{
-				$output .= $array2[$pos];
-			}
-			else
-			{
-				$output .= $char;
-			}
+			$output .= ($pos !== false) ? $array2[$pos] : $char;
 		}
 
 		return $output;
 	}
 
-	/**
+	/*
 	 * Replaces special characters to their html-entity
 	 *
 	 * @param string $input Input string
@@ -203,7 +196,7 @@
 		return $output;
 	}
 
-	/**
+	/*
 	 * Cleanup input received from ckeditor
 	 * newlines and tabs are removed, opening paragraph right after a closing paragraph is replace by two line breaks
 	 *
@@ -219,7 +212,7 @@
 		return $output;
 	}
 
-	/**
+	/*
 	 * Returns the given number in a human friendly format (NL)
 	 *
 	 * @param int $number Input number
@@ -240,34 +233,20 @@
 			$result = '.'. substr($whole, (-3*$i), 3) . $result;
 		}
 
-		if ($rest != 0)
-		{
-			$result = left($whole, $rest) . $result;
-		}
-		else
-		{
-			$result = right($result, strlen($result)-1);
-		}
+		$result = ($rest != 0) ? left($whole, $rest) . $result : right($result, strlen($result)-1);
 
 		if ($decimalcount>0)
 		{
 			$newnumber = round($number, $decimalcount);
 			$whole = (($newnumber - floor($newnumber)) == 0) ? true : false;
 
-			if (!$whole)
-			{
-				$result = $result .','. right($newnumber, $decimalcount);
-			}
-			else
-			{
-				$result = $result .',-';
-			}
+			$result = (!$whole) ? $result .','. right($newnumber, $decimalcount) : $result .',-';
 		}
 
 		return $result;
 	}
 
-	/**
+	/*
 	 * Returns the given truncated iso date in a human friendly format (NL)
 	 *
 	 * @param int $input ISO date (YYYYMMDDHHMMSS)
@@ -281,19 +260,9 @@
 			$year = left($input, 4);
 			$month = right(left($input, 6), 2);
 			$day = right(left($input, 8), 2);
-
-			if (strlen($input)==14)
-			{
-				$hour = left(right($input, 6), 2);
-				$minute = left(right($input, 4), 2);
-				$second = right($input, 2);
-			}
-			else
-			{
-				$hour = 0;
-				$minute = 0;
-				$second = 0;
-			}
+			$hour = (strlen($input)==14) ? left(right($input, 6), 2) : 0;
+			$minute = (strlen($input)==14) ? left(right($input, 4), 2) : 0;
+			$second = (strlen($input)==14) ? right($input, 2) : 0;
 		}
 		else
 		{
@@ -302,38 +271,8 @@
 
 		$newdate = mktime($hour, $minute, $second, $month, $day, $year);
 
-		if (strlen($input)==14)
-		{
-			$result = date('d-m-Y H:i:s', $newdate);
-		}
-		else
-		{
-			$result = date('d-m-Y', $newdate);
-		}
+		$result = (strlen($input)==14) ? $result = date('d-m-Y H:i:s', $newdate) : $result = date('d-m-Y', $newdate);
 
 		return $result;
-	}
-
-	/**
-	 * Returns the IP-address from the server variables
-	 *
-	 * @return string IP-address
-	 */
-	function getRealIP()
-	{
-		if (!empty($_SERVER['HTTP_CLIENT_IP']))	//check ip from share internet
-		{
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		}
-		elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))	//to check ip is pass from proxy
-		{
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}
-		else
-		{
-			$ip = $_SERVER['REMOTE_ADDR'];
-		}
-
-		return $ip;
 	}
 ?>
